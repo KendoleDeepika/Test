@@ -1,0 +1,27 @@
+1)
+SELECT movieId, COUNT(*) AS rating_count, AVG(rating) AS average_rating
+FROM user_ratings
+GROUP BY movieId
+
+2)
+SELECT m.*, u.rating_count, u.average_rating
+FROM movies m
+INNER JOIN (
+    SELECT movieId, COUNT(*) AS rating_count, AVG(rating) AS average_rating
+    FROM user_ratings
+    GROUP BY movieId
+) u ON m.movieId = u.movieId
+
+
+3)
+SELECT *
+FROM (
+    SELECT m.*, u.rating_count, u.average_rating
+    FROM movies m
+    INNER JOIN (
+        SELECT movieId, COUNT(*) AS rating_count, AVG(rating) AS average_rating
+        FROM user_ratings
+        GROUP BY movieId
+    ) u ON m.movieId = u.movieId
+) filtered_movies
+WHERE filtered_movies.rating_count > 50
